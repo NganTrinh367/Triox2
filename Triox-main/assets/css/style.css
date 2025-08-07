@@ -49,16 +49,17 @@ a {
 
 /* Header */
 .header{
-    padding: 12px 0;
+    padding: 6px 0;
     background-color: var(--color-primary);
 }
 .header .inner-wrap{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 80px;
 }
 .header .inner-logo img {
-  width: 218px;
+  width: 160px;
   height: auto;
 }
 .header .inner-menu > ul {
@@ -66,7 +67,7 @@ a {
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 40px;
+  gap: 50px;
 }
 
 .header .inner-menu > ul > li {
@@ -76,7 +77,8 @@ a {
   position: relative;
 }
 
-.header .inner-menu > ul > li > a , i{
+.header .inner-menu > ul > li > a,
+.header .inner-menu > ul > li > i{
   font-weight: 500;
   font-size: 16px;
   color: #ffffff;
@@ -156,7 +158,17 @@ a {
   top: 4px;
   left: -5px;
 }
-
+.login-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px; 
+}
+.icon-login img {
+  width: 40px; 
+  height: 34px;
+  object-fit: contain;
+  cursor: pointer;
+}
 .header .inner-button-menu {
   display: none;
 }
@@ -534,14 +546,6 @@ a {
   align-items: center;
   gap: 4px;
 }
-
-.product-item .inner-content .inner-rating .inner-stars {
-  display: flex;
-  gap: 2px;
-  font-size: 13.5px;
-  color: #FFD600;
-}
-
 .product-item .inner-content .inner-rating .inner-number {
   font-weight: 400;
   font-size: 11px;
@@ -998,9 +1002,9 @@ a {
   gap: 40px;
 }
 
-.footer .inner-middle .inner-socials a {
+.footer .inner-middle .inner-socials a,i {
   font-size: 24px;
-  color: #25282B;
+  color: #2b2525;
 }
 
 .footer .inner-middle .inner-socials a:hover {
@@ -1160,7 +1164,7 @@ a {
 
 .box-contact a {
   font-size: 19px;
-  color: white;
+  color: #ffffff;
 }
 
 @media (max-width: 575.98px) {
