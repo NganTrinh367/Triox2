@@ -77,11 +77,17 @@ a {
   position: relative;
 }
 
-.header .inner-menu > ul > li > a,
-.header .inner-menu > ul > li > i{
+.header .inner-menu > ul > li > a{
   font-weight: 500;
   font-size: 16px;
   color: #ffffff;
+}
+
+.header .inner-menu > ul > li > span{
+  position: relative;
+  top: 3px;
+  font-size: 18px;  
+  color: white;
 }
 .header .inner-cart {
   display: flex;
@@ -493,7 +499,7 @@ a {
   font-size: 14px;
   height: 36px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  active: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
 }
@@ -819,7 +825,7 @@ a {
   font-size: 18px;
   color: white;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  active: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1164,7 +1170,7 @@ a {
 
 .box-contact a {
   font-size: 19px;
-  color: #ffffff;
+  /* color: #ffffff; */
 }
 
 @media (max-width: 575.98px) {
