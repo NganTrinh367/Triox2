@@ -1,37 +1,277 @@
-// JavaScript cho Triox Website
-
 document.addEventListener('DOMContentLoaded', function() {
     
     // Xử lý active class cho menu
     const menuLinks = document.querySelectorAll('.header .inner-menu a');
-    
     menuLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Xóa active class khỏi tất cả links
             menuLinks.forEach(l => l.classList.remove('active'));
-            // Thêm active class cho link được click
             this.classList.add('active');
         });
     });
 
-    // Xử lý số lượng trong cart (giả lập)
-    let cartCount = 1;
-    const cartSpan = document.querySelector('.header .inner-cart span');
-    const cartCountText = cartSpan.childNodes[2]; // Text node chứa số
-
-    // Function để cập nhật cart count
-    function updateCartCount(newCount) {
-        cartCount = newCount;
-        cartCountText.textContent = cartCount;
+    // Cart system - SIÊU ĐƠN GIẢN
+    let cartCount = 0;
+    
+    // Tìm cart element bằng nhiều cách
+    function findCartElement() {
+        const selectors = [
+            '.header .inner-cart span',
+            '.inner-cart span',
+            '.header .inner-cart',
+            '.inner-cart',
+            '[class*="cart"] span'
+        ];
+        
+        for (const selector of selectors) {
+            const el = document.querySelector(selector);
+            if (el) {
+                console.log(`✓ Found cart element: ${selector}`, el);
+                return el;
+            }
+        }
+        
+        console.log('❌ No cart element found');
+        return null;
     }
 
-    // Giả lập thêm item vào cart khi click vào cart
-    document.querySelector('.header .inner-cart').addEventListener('click', function(e) {
-        e.preventDefault();
-        updateCartCount(cartCount + 1);
-    });
+    const cartElement = findCartElement();
 
-    // Xử lý mobile menu toggle
+    // Update cart count - CHỈ 1 CÁCH DUY NHẤT
+    function updateCartCount(newCount) {
+        cartCount = Math.max(0, parseInt(newCount) || 0);
+        
+        console.log(`🛒 Updating cart to: ${cartCount}`);
+        
+        if (cartElement) {
+            // Chỉ thay đổi TEXT, không động gì đến HTML structure
+            const originalText = cartElement.textContent;
+            const newText = originalText.replace(/\d+/g, cartCount);
+            
+            // Nếu không có số nào, thêm số vào
+            if (!/\d/.test(originalText)) {
+                cartElement.textContent = originalText + ' ' + cartCount;
+            } else {
+                cartElement.textContent = newText;
+            }
+            
+            console.log(`✓ Cart updated: "${originalText}" → "${cartElement.textContent}"`);
+        } else {
+            console.log('❌ Cart element not found for update');
+        }
+        
+        // Lưu localStorage
+        localStorage.setItem('cartCount', cartCount.toString());
+    }
+
+    // Khởi tạo
+    function initCart() {
+        let initial = 0;
+        
+        try {
+            const stored = localStorage.getItem('cartCount');
+            if (stored) initial = parseInt(stored, 10) || 0;
+        } catch (e) {}
+        
+        console.log(`🎯 Initializing cart with: ${initial}`);
+        updateCartCount(initial);
+    }
+
+    // Chờ 500ms để đảm bảo DOM ready
+    setTimeout(initCart, 500);
+
+    // ===== PUBLIC FUNCTIONS =====
+    
+    // Thêm sản phẩm
+    window.addToCart = function(quantity = 1) {
+        quantity = parseInt(quantity) || 1;
+        const newCount = cartCount + quantity;
+        
+        console.log(`➕ Adding ${quantity} items: ${cartCount} → ${newCount}`);
+        updateCartCount(newCount);
+        
+        showNotification(`Đã thêm ${quantity} sản phẩm! (Tổng: ${newCount})`);
+        return newCount;
+    };
+
+    // Reset giỏ hàng  
+    window.resetCartCount = function() {
+        console.log('🔄 Resetting cart to 0');
+        updateCartCount(0);
+        showNotification('Giỏ hàng đã được làm mới!');
+        return 0;
+    };
+
+    // Debug function
+    window.debugCart = function() {
+        console.log('\n=== 🔍 CART DEBUG ===');
+        console.log('Current cartCount:', cartCount);
+        console.log('Cart element:', cartElement);
+        console.log('Cart text:', cartElement ? cartElement.textContent : 'N/A');
+        console.log('LocalStorage:', localStorage.getItem('cartCount'));
+        
+        // List all cart-like elements
+        console.log('\n📋 All cart-like elements:');
+        const allCarts = document.querySelectorAll('[class*="cart"], [id*="cart"]');
+        allCarts.forEach((el, i) => {
+            console.log(`${i + 1}:`, el.className, el.textContent);
+        });
+        
+        return {
+            count: cartCount,
+            element: cartElement,
+            storage: localStorage.getItem('cartCount')
+        };
+    };
+
+    // Notification system
+    function showNotification(message) {
+        // Remove existing notification
+        const existing = document.querySelector('.cart-notification');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = 'cart-notification';
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 9999;
+            font-size: 14px;
+            font-weight: bold;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+        `;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 10);
+
+        // Auto remove
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // ===== EVENT HANDLERS =====
+
+    // Cart click - CLICK = ADD, SHIFT+CLICK = RESET
+    const cartLink = document.querySelector('.header .inner-cart');
+    if (cartLink) {
+        cartLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // SHIFT + Click = Reset cart
+            // Normal Click = Add to cart
+            if (e.shiftKey) {
+                console.log('🔄 SHIFT+Click detected - Resetting cart!');
+                resetCartCount();
+            } else {
+                console.log('🛒 Adding item to cart via click!');
+                addToCart(1);
+            }
+        });
+    }
+
+    // Auto-detect buy buttons - MỞ RỘNG TÌM KIẾM
+    function attachBuyButtons() {
+        // Tìm theo class và attribute
+        const buyButtons = document.querySelectorAll(`
+            .buy-btn,
+            .add-to-cart,
+            [class*="buy"],
+            [class*="mua"],
+            [class*="them"],
+            [class*="add"],
+            [class*="cart"]:not(.inner-cart),
+            button[onclick*="buy"],
+            button[onclick*="mua"],
+            .btn-buy,
+            .button-buy,
+            .btn-primary,
+            .btn-success,
+            .product-btn,
+            .shop-btn
+        `);
+        
+        // Tìm tất cả buttons và filter theo text
+        const allButtons = document.querySelectorAll('button, .button, [role="button"], .btn, a[href*="buy"], a[href*="mua"]');
+        const textBuyButtons = Array.from(allButtons).filter(btn => {
+            const text = btn.textContent.toLowerCase().trim();
+            const hasKeyword = text.includes('mua') || 
+                              text.includes('buy') || 
+                              text.includes('thêm') || 
+                              text.includes('add') ||
+                              text.includes('cart') ||
+                              text.includes('đặt') ||
+                              text.includes('order');
+            
+            const notCartIcon = !btn.closest('.inner-cart');
+            
+            if (hasKeyword && notCartIcon) {
+                console.log(`🎯 Found potential buy button: "${text}"`, btn);
+            }
+            
+            return hasKeyword && notCartIcon;
+        });
+
+        const allBuyButtons = [...buyButtons, ...textBuyButtons];
+        
+        allBuyButtons.forEach(btn => {
+            if (!btn.hasAttribute('data-cart-attached')) {
+                btn.setAttribute('data-cart-attached', 'true');
+                btn.addEventListener('click', function(e) {
+                    console.log('🛒 Buy button clicked:', btn.textContent.trim());
+                    addToCart(1);
+                });
+                console.log(`✅ Attached event to: "${btn.textContent.trim()}"`);
+            }
+        });
+
+        console.log(`🔗 Attached cart events to ${allBuyButtons.length} buy buttons`);
+        
+        // Nếu không tìm thấy button nào, hiển thị tất cả buttons để debug
+        if (allBuyButtons.length === 0) {
+            console.log('\n🚨 No buy buttons found! All buttons on page:');
+            const allPageButtons = document.querySelectorAll('button, .button, .btn, [role="button"]');
+            allPageButtons.forEach((btn, i) => {
+                console.log(`${i + 1}. "${btn.textContent.trim()}" - class: ${btn.className}`);
+            });
+            console.log('\n💡 You can manually call addToCart(1) or use SHIFT+Click on cart icon');
+        }
+        
+        return allBuyButtons.length;
+    }
+
+    // Attach buy buttons ngay và sau 2 giây
+    setTimeout(attachBuyButtons, 100);
+    setTimeout(attachBuyButtons, 2000);
+
+    // Reset cart on successful checkout
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('order') === 'complete' || 
+        urlParams.get('checkout') === 'success') {
+        setTimeout(() => {
+            resetCartCount();
+        }, 1000);
+    }
+
+    // ===== OTHER FEATURES =====
+
+    // Mobile menu toggle
     const menuButton = document.querySelector('.header .inner-button-menu');
     const menu = document.querySelector('.header .inner-menu');
     
@@ -41,25 +281,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Xử lý dropdown cho các input trong section-1
-    const dropdownInputs = document.querySelectorAll('.section-1 .inner-input');
-    
-    dropdownInputs.forEach(input => {
-        const dropdown = input.parentElement.querySelector('.inner-down');
-        
-        if (dropdown) {
-            dropdown.addEventListener('click', function() {
-                // Giả lập dropdown functionality
-                console.log('Dropdown clicked for:', input.placeholder);
-                // Có thể thêm logic dropdown thực tế ở đây
-            });
-        }
+    // Mobile submenu toggle
+    const mobileArrows = document.querySelectorAll('.header .inner-menu > ul > li > span.material-symbols-outlined');
+    mobileArrows.forEach(arrow => {
+        arrow.style.cursor = 'pointer';
+        arrow.addEventListener('click', function(e) {
+            if (window.matchMedia('(max-width: 991.98px)').matches) {
+                e.preventDefault();
+                const submenu = this.parentNode.querySelector('.inner-sub');
+                if (submenu) {
+                    // Close other submenus
+                    mobileArrows.forEach(otherArrow => {
+                        const otherSubmenu = otherArrow.parentNode.querySelector('.inner-sub');
+                        if (otherSubmenu && otherSubmenu !== submenu) {
+                            otherSubmenu.style.maxHeight = '0px';
+                        }
+                    });
+                    
+                    // Toggle current submenu
+                    const isOpen = submenu.style.maxHeight && submenu.style.maxHeight !== '0px';
+                    submenu.style.maxHeight = isOpen ? '0px' : submenu.scrollHeight + 'px';
+                }
+            }
+        });
     });
 
-    // Xử lý form search
+    // Search form
     const searchButton = document.querySelector('.section-1 .inner-button');
-    
-    if (searchButton) { 
+    if (searchButton) {
         searchButton.addEventListener('click', function(e) {
             e.preventDefault();
             
@@ -67,111 +316,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const userInput = document.querySelector('.inner-user .inner-input');
             const calendarInput = document.querySelector('.inner-calendar .inner-input');
             
-            // Lấy giá trị từ các input
             const searchData = {
-                address: addressInput.value,
-                users: userInput.value,
-                date: calendarInput.value
+                address: addressInput?.value || '',
+                users: userInput?.value || '',
+                date: calendarInput?.value || ''
             };
             
-            console.log('Tìm kiếm với dữ liệu:', searchData);
-            
-            // Hiển thị thông báo tạm thời
+            console.log('🔍 Search data:', searchData);
             alert(`Tìm kiếm: ${searchData.address || 'Chưa chọn địa điểm'}`);
         });
     }
+
+    // Ready message
+    console.log('\n🎉 Cart system ready!');
+    console.log('💡 Test methods:');
+    console.log('   1. Click cart icon - Add 1 item');
+    console.log('   2. SHIFT + Click cart icon - Reset to 0');
+    console.log('   3. addToCart(n) - Add n items');
+    console.log('   4. resetCartCount() - Reset to 0');
+    console.log('   5. debugCart() - Debug info');
+    
+    // Tự động test sau 3 giây
+    setTimeout(() => {
+        console.log('\n🧪 AUTO TEST: Adding 1 item...');
+        addToCart(1);
+    }, 3000);
 });
-
-
-// Ngân JS 
-// Mảng dữ liệu khóa học
-  const courses = [
-    {
-      title: "Khóa Học HTML CSS Cơ Bản",
-      img: "assets/images/product-1.png",
-      discount: "-30%",
-      oldPrice: "2.000.000",
-      newPrice: "1.200.000",
-      lessons: 30,
-      exercises: "300 bài",
-      year: 2025,
-      bought: "500+",
-      stock: 10
-    },
-    {
-      title: "Khóa Học JavaScript Nâng Cao",
-      img: "assets/images/product-2.png",
-      discount: "-40%",
-      oldPrice: "3.000.000",
-      newPrice: "1.800.000",
-      lessons: 40,
-      exercises: "450 bài",
-      year: 2025,
-      bought: "800+",
-      stock: 7
-    },
-    {
-      title: "Khóa Học ReactJS",
-      img: "assets/images/product-3.png",
-      discount: "-50%",
-      oldPrice: "4.000.000",
-      newPrice: "2.500.000",
-      lessons: 50,
-      exercises: "500 bài",
-      year: 2025,
-      bought: "1000+",
-      stock: 5
-    },
-  ];
-  const list = document.querySelector(".section-2 .inner-list");
-
-  let html = "";
-  courses.forEach(course => {
-    html += `
-      <div class="product-item">
-        <div class="inner-image">
-          <a href="#">
-            <img src="${course.img}" alt="${course.title}">
-          </a>
-        </div>
-        <div class="inner-discount">
-          <i class="fa-solid fa-bolt"></i> Giảm ${course.discount}
-        </div>
-        <div class="inner-content">
-          <h3 class="inner-title">
-            <a href="#">${course.title}</a>
-          </h3>
-          <div class="inner-prices">
-            <div class="inner-price-old">
-              ${course.oldPrice}<span class="inner-unit">đ</span>
-            </div>
-            <div class="inner-price-new">
-              ${course.newPrice}<span class="inner-unit">đ</span>
-            </div>
-          </div>
-          <div class="inner-desc">
-            <div>Số bài giảng: <b>${course.lessons}</b></div>
-            <div>Số lượng bài tập : <b>${course.exercises}</b></div>
-            <div>Khóa Năm: <b>${course.year}</b></div>
-          </div>
-          <div class="inner-meta">
-            <div class="inner-rating">
-              <div class="inner-number">
-                Số lượt đã mua (${course.bought})
-              </div>
-            </div>
-            <div class="inner-stock">
-              <div class="inner-label">
-                Số chỗ còn:
-              </div>
-              <div class="inner-number">
-                ${course.stock}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  list.innerHTML = html;
