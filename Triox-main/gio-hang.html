@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giỏ hàng</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=keyboard_arrow_down" />
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="inner-wrap">
+        <button class="inner-button-menu">
+          <img src="assets/images/icon-menu.png" alt="">
+        </button>
+        <a href="#" class="inner-logo">
+          <img src="assets/images/logo.png" alt="Triox">
+        </a>
+        <nav class="inner-menu">
+          <ul>
+            <li>
+              <a href="../Triox-main/index.html">
+                Trang Chủ
+              </a>
+            </li>
+            <li>
+              <a href="../Triox-main/khoa-hoc-truc-tuyen.html">
+                Khóa Học Trực tuyến
+              </a>
+              <!-- <i class="fa-solid fa-down-long"></i> -->
+              <span class="material-symbols-outlined">keyboard_arrow_down</span>
+
+              <ul class="inner-sub">
+                <li>
+                  <a href="#" class="active">
+                    Tiếng Anh Toàn Diện
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Lập Trình Cho Người Mới
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Lập Trình Nâng Cao
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    Luyện Thi THPT Quốc Gia
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="../Triox-main/khoa-hoc-video.html"> 
+                Khóa Học Video
+              </a>
+            </li>
+            <li>
+              <a href="../Triox-main/blog.html">
+                Blog
+              </a>
+            </li>
+            <li>
+              <a href="../Triox-main/feedback.html" id="feedbackBtn">
+                Feedback
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="login-wrap">
+          <a href="../Triox-main/gio-hang.html" class="inner-cart">
+          <img src="assets/images/icon-cart.png" alt="">
+          <span>
+            <img src="assets/images/icon-arrow-left.png" alt="">
+            1
+          </span>
+          </a>
+          <span class="icon-login">
+            <a href="../Triox-main/login.html"><img src="assets/images/user.png" alt=""></a>
+          </span>
+        </div>
+        
+      </div>
+    </div>
+  </header>
+
+  <!-- Section 11 -->
+  <div class="section-11">
+    <div class="container">
+      <div class="inner-wrap">
+        <div class="inner-head">
+          <div class="inner-title">
+            Giỏ Hàng
+          </div>
+          <a href="../Triox-main/khoa-hoc-truc-tuyen.html" class="inner-back">
+            Quay lại mua hàng <i class="fa-solid fa-angle-right"></i>
+          </a>
+        </div>
+        <div class="inner-our-list">
+          <div class="inner-our-item">
+            <div class="inner-actions">
+              <button class="inner-delete">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <input type="checkbox" class="inner-check">
+            </div>
+            <div class="inner-product">
+              <div class="inner-image">
+                <a href="#">
+                  <img src="assets/images/product-4.png" alt="">
+                </a>
+              </div>
+              <div class="inner-content">
+                <div class="inner-title">
+                  <a href="#">
+                    Thiết Kế Website
+                  </a>
+                </div>
+                <div class="inner-meta">
+                  <div>Mã Đơn hàng: <b>953456789</b></div>
+                  <div>Ngày mở lớp: <b>25/1/2024</b></div>
+                  <div>Lịch học <b>Chủ Nhật</b></div>
+                  <div>Giờ học <b>19h - 20h</b> </div>
+                  <div>Giảng viên <b>Đội ngũ chuyên gia Triox</b></div>
+                </div>
+              </div>
+            </div>
+            <div class="inner-quantity">
+              <div class="inner-label">
+                Số lượng khóa học
+              </div>
+              <div class="inner-list">
+                <div class="inner-item">
+                  <div class="inner-item-label">Gói Cơ bản:</div>
+                  <input type="number" class="inner-item-input" value="1" min="0">
+                  <div class="inner-item-price">
+                    <span>1</span>
+                    <span>x</span>
+                    <span class="inner-highlight">Free</span>
+                  </div>
+                </div>
+
+                <div class="inner-item">
+                  <div class="inner-item-label">Gói Nâng cao:</div>
+                  <input type="number" class="inner-item-input" value="0" min="0">
+                  <div class="inner-item-price">
+                    <span>0</span>
+                    <span>x</span>
+                    <span class="inner-highlight">2.800.000</span>
+                  </div>
+                </div>
+
+                <div class="inner-item">
+                  <div class="inner-item-label">Gói Pro:</div>
+                  <input type="number" class="inner-item-input" value="0" min="0">
+                  <div class="inner-item-price">
+                    <span>0</span>
+                    <span>x</span>
+                    <span class="inner-highlight">8.900.000</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <!-- End Section 11 -->
+
+  <!-- Section 12 -->
+  <div class="section-12">
+    <div class="container">
+      <div class="inner-wrap">
+        <form action="">
+          <div class="inner-title-main">
+            Thông Tin Khách Hàng
+          </div>
+          <div class="inner-list-group">
+            <div class="inner-group">
+              <input type="text" placeholder="Họ và tên">
+            </div>
+            <div class="inner-group">
+              <input type="text" placeholder="Số điện thoại">
+            </div>
+            <div class="inner-group inner-two-col">
+              <textarea placeholder="Ghi chú"></textarea>
+            </div>
+          </div>
+          <div class="inner-title-main">
+            Chọn phương thức thanh toán
+          </div>
+          <div class="inner-list-method">
+            <div class="inner-item">
+              <input type="radio" name="method" value="money" id="methodMoney">
+              <label for="methodMoney">Thanh toán tiền mặt khi đi our</label>
+            </div>
+            <div class="inner-item">
+              <input type="radio" name="method" value="momo" id="methodMomo">
+              <label for="methodMomo">Ví MoMo</label>
+            </div>
+            <div class="inner-item">
+              <input type="radio" name="method" value="bank" id="methodBank">
+              <label for="methodBank">Chuyển khoản ngân hàng</label>
+            </div>
+          </div>
+          <div class="inner-info-bank">
+            <div class="inner-title">
+              Thông tin chuyển khoản
+            </div>
+            <div class="inner-text">
+              <div>Ngân hàng : Vietcombank</div>
+              <div>Tên tài khoản: Le Van A</div>
+              <div>STK: 0123456789</div>
+            </div>
+          </div>
+          <div class="inner-button">
+            <button>
+              Đăng Ký Ngay
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End Section 12 -->
+
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="inner-top">
+        <div class="inner-title">
+          Hỗ trợ - Tư vấn miễn phí  
+        </div>
+        <form action="" class="inner-form">
+          <input type="email" placeholder="Nhập email của bạn...">
+          <button>Đăng Ký Ngay</button>
+        </form>
+      </div>
+      <div class="inner-middle">
+        <nav class="inner-links">
+          <ul>
+            <li>
+              <a href="#">
+                Trang Chủ
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Khóa Học Trực Tuyến
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Khóa Học Video
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Về Triox
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Feedback
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <nav class="inner-socials">
+          <ul>
+            <li>
+              <a href="#" target="_blank">
+                <i class="fa-brands fa-facebook"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" target="_blank">
+                <i class="fa-brands fa-tiktok"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" target="_blank">
+                <i class="fa-brands fa-youtube"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="inner-bottom">
+        <div class="inner-copyright">
+          © 2025 Triox. All rights reserved.
+        </div>
+        <a href="#" class="inner-logo">
+          <img src="assets/images/logo.png" alt="">
+        </a>
+        <nav class="inner-links">
+          <ul>
+            <li>
+              <a href="#">
+                Điều khoản dịch vụ
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Chính sách bảo mật
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <!-- Box Contact -->
+  <nav class="box-contact">
+    <ul>
+      <li>
+        <a href="#" target="_blank">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+      </li>
+      <li>
+        <a href="#" target="_blank">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </li>
+      <li>
+        <a href="#" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </li>
+      <li>
+        <a href="#" target="_blank">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- End Box Contact -->
+  
+  <script src="assets/js/script.js"></script>
+</body>
+
+</html>

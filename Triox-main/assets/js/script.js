@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Cart system - SIÊU ĐƠN GIẢN
+    // Cart system - SIÊU ĐỂN GIẢN
     let cartCount = 0;
     
     // Tìm cart element bằng nhiều cách
@@ -341,4 +341,205 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('\n🧪 AUTO TEST: Adding 1 item...');
         addToCart(1);
     }, 3000);
+});
+
+document.addEventListener('DOMContentLoaded'), () => {
+      const feedbackBtn = document.getElementById('feedbackBtn');
+      const feedbackModal = document.getElementById('feedbackModal');
+      const closeBtn = document.getElementById('closeBtn');
+      const feedbackForm = document.getElementById('feedbackForm');
+      const starRating = document.getElementById('starRating');
+      const quickBtns = document.querySelectorAll('.quick-btn');
+      const successMessage = document.getElementById('successMessage');
+
+      let selectedRating = 0;
+      let selectedQuickFeedback = [];
+
+      // Open modal
+      feedbackBtn.addEventListener('click', () => {
+        feedbackModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      // Close modal
+      const closeModal = () => {
+        feedbackModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        resetForm();
+      };
+
+      closeBtn.addEventListener('click', closeModal);
+
+      // Close when clicking outside
+      feedbackModal.addEventListener('click', (e) => {
+        if (e.target === feedbackModal) {
+          closeModal();
+        }
+      });
+
+      // Star rating
+      const stars = document.querySelectorAll('.star');
+      stars.forEach((star, index) => {
+        star.addEventListener('mouseover', () => {
+          highlightStars(index + 1);
+        });
+
+        star.addEventListener('click', () => {
+          selectedRating = index + 1;
+          highlightStars(selectedRating);
+        });
+      });
+
+      starRating.addEventListener('mouseleave', () => {
+        highlightStars(selectedRating);
+      });
+
+      function highlightStars(rating) {
+        stars.forEach((star, index) => {
+          if (index < rating) {
+            star.classList.add('active');
+          } else {
+            star.classList.remove('active');
+          }
+        });
+      }
+
+      // Quick feedback buttons
+      quickBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const feedback = btn.dataset.feedback;
+          if (btn.classList.contains('active')) {
+            btn.classList.remove('active');
+            selectedQuickFeedback = selectedQuickFeedback.filter(f => f !== feedback);
+          } else {
+            btn.classList.add('active');
+            selectedQuickFeedback.push(feedback);
+          }
+        });
+      });
+
+      // Form submission
+      feedbackForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = {
+          rating: selectedRating,
+          quickFeedback: selectedQuickFeedback,
+          type: document.getElementById('feedbackType').value,
+          name: document.getElementById('customerName').value.trim(),
+          email: document.getElementById('customerEmail').value.trim(),
+          message: document.getElementById('feedbackMessage').value.trim(),
+          timestamp: new Date().toISOString()
+        };
+
+        // Basic validation
+        if (!formData.message && selectedQuickFeedback.length === 0) {
+          alert('Vui lòng nhập nội dung phản hồi hoặc chọn phản hồi nhanh!');
+          return;
+        }
+
+        // Simulate sending data
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
+
+        setTimeout(() => {
+          console.log('Feedback Data:', formData);
+          
+          // Hide form and show success message
+          feedbackForm.style.display = 'none';
+          successMessage.style.display = 'block';
+          
+          // Auto close after 3 seconds
+          setTimeout(() => {
+            closeModal();
+          }, 3000);
+        }, 1500);
+      });
+
+      // Reset form
+      function resetForm() {
+        feedbackForm.reset();
+        feedbackForm.style.display = 'block';
+        successMessage.style.display = 'none';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Gửi Feedback';
+        
+        selectedRating = 0;
+        selectedQuickFeedback = [];
+        highlightStars(0);
+        
+        quickBtns.forEach(btn => btn.classList.remove('active'));
+      }
+
+      // ESC key to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && feedbackModal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      console.log('Feedback system initialized');
+    }
+
+document.addEventListener('DOMContentLoaded'), () =>{
+  const khoahoctructuyenBtn = document.getElementById('const khoahoctructuyen.Btn');
+  const tienganhtoandienBtn = document.getElementById('tienganhtoandien.Btn');
+  const laptrinhchonguoimoiBtn = document.getElementById('laptrinhchonguoimoiBtn');
+  const laptrinhnangcaoBtn = document.getElementById('laptrinhchonguoimoiBtn');
+  const luyenthithptquocgiaBtn = document.getElementById('luyenthithptquocgiaBtn');
+
+  let openkhoahoctructuyen = 0; // Main
+  let tienganhtoandien = 0;     // 1
+  let laptrinhchonguoimoi = 0;  // 2
+  let laptrinhnangcao = 0;      // 3
+  let luyenthithptquocgia = 0;  // 4
+
+  // Click option from main and 1 to 4
+
+
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnAsc = document.getElementById('sort-asc');
+  const list = document.getElementById('product-list');
+
+  // Lấy số từ chuỗi giá, hỗ trợ . , ₫ đ
+  const parsePrice = (el) => {
+    // Ưu tiên data-price nếu có
+    if (el.dataset && el.dataset.price) {
+      return Number(el.dataset.price);
+    }
+    // Nếu không có, đọc text từ .price hoặc chính nó
+    const priceNode = el.querySelector?.('.price') || el;
+    const raw = (priceNode?.textContent || '').trim();
+    // Giữ lại số, dấu . , , và -
+    // Chuẩn hóa: đổi dấu . hoặc , ngăn cách nghìn về trống, còn dấu thập phân giữ lại
+    // B1: loại ký tự tiền tệ
+    let s = raw.replace(/[^\d.,-]/g, '');
+    // B2: nếu có cả . và , → giả định dấu thập phân là ký tự xuất hiện SAU CÙNG
+    const lastComma = s.lastIndexOf(',');
+    const lastDot = s.lastIndexOf('.');
+    const decSep = Math.max(lastComma, lastDot);
+    if (decSep !== -1) {
+      // tách phần thập phân và nguyên
+      const intPart = s.slice(0, decSep).replace(/[.,]/g, '');
+      const fracPart = s.slice(decSep + 1);
+      s = `${intPart}.${fracPart}`;
+    } else {
+      s = s.replace(/[.,]/g, '');
+    }
+    return Number(s || 0);
+  };
+
+  btnAsc.addEventListener('click', () => {
+    // Lấy các item (HTMLCollection -> Array)
+    const items = Array.from(list.children);
+
+    items.sort((a, b) => parsePrice(a) - parsePrice(b));
+
+    // Gắn lại theo thứ tự mới
+    const frag = document.createDocumentFragment();
+    for (const item of items) frag.appendChild(item);
+    list.appendChild(frag);
+  });
 });
